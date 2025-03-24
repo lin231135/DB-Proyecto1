@@ -138,3 +138,32 @@ CREATE TABLE Sale_Detail (
 );
 
 CREATE INDEX idx_sale_datetime ON Sale(datetime);
+
+CREATE TYPE Expense_Type AS ENUM ('operational', 'administrative', 'marketing', 'travel');
+
+-- Tabla de Métodos de Pago
+CREATE TABLE Payment_Method_Table (
+    payment_method_id SERIAL PRIMARY KEY,
+    method_name Payment_Method
+);
+
+-- Tabla de Gastos
+CREATE TABLE Expense (
+    expense_id SERIAL PRIMARY KEY,
+    type Expense_Type,
+    amount FLOAT CHECK (amount > 0),
+    description VARCHAR,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla de Reportes
+CREATE TABLE Report (
+    report_id SERIAL PRIMARY KEY,
+    sale_id INTEGER,
+    expense_id INTEGER,
+    generation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    report_type VARCHAR,
+    description TEXT,
+    FOREIGN KEY (sale_id) REFERENCES Sale(sale_id),
+    FOREIGN KEY (expense_id) REFERENCES Expense(expense_id)
+);
