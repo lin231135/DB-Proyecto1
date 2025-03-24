@@ -33,3 +33,15 @@ CREATE TABLE Role_Permission (
     FOREIGN KEY (role_id) REFERENCES Role(role_id),
     FOREIGN KEY (permission_id) REFERENCES Permission(permission_id)
 );
+
+-- Tabla de Empleados
+CREATE TABLE Employee (
+    employee_id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    role_id INTEGER NOT NULL,
+    biometric_data BYTEA,
+    username VARCHAR UNIQUE NOT NULL,
+    password_hash VARCHAR NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES Role(role_id)
+);
+
