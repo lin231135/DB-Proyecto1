@@ -110,3 +110,31 @@ CREATE TABLE Inventory (
 );
 
 CREATE INDEX idx_inventory_product_id ON Inventory(product_id);
+
+CREATE TYPE Payment_Method AS ENUM ('cash', 'credit_card', 'debit_card', 'online_payment');
+
+-- Tabla de Ventas
+CREATE TABLE Sale (
+    sale_id SERIAL PRIMARY KEY,
+    datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    employee_id INTEGER NOT NULL,
+    user_nit VARCHAR,
+    total FLOAT CHECK (total >= 0),
+    payment_method Payment_Method,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+    FOREIGN KEY (user_nit) REFERENCES Users(nit)
+);
+
+-- Tabla de Detalles de Venta
+CREATE TABLE Sale_Detail (
+    sale_detail_id SERIAL PRIMARY KEY,
+    sale_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER CHECK (quantity > 0),
+    unit_price FLOAT CHECK (unit_price >= 0),
+    discount FLOAT DEFAULT 0 CHECK (discount >= 0 AND discount <= 100),
+    FOREIGN KEY (sale_id) REFERENCES Sale(sale_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+
+CREATE INDEX idx_sale_datetime ON Sale(datetime);
