@@ -45,3 +45,15 @@ CREATE TABLE Employee (
     FOREIGN KEY (role_id) REFERENCES Role(role_id)
 );
 
+CREATE TYPE Shift_Status AS ENUM ('scheduled', 'completed', 'cancelled');
+
+-- Tabla de Turnos
+CREATE TABLE Shift (
+    shift_id SERIAL PRIMARY KEY,
+    employee_id INTEGER NOT NULL,
+    date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    status Shift_Status,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
