@@ -87,3 +87,26 @@ CREATE TABLE Movement_Type (
     movement_type_id SERIAL PRIMARY KEY,
     type_name Movement_Type_Name
 );
+
+-- Tabla de Proveedores
+CREATE TABLE Supplier (
+    supplier_id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    contact VARCHAR,
+    phone VARCHAR
+);
+
+-- Tabla de Inventario
+CREATE TABLE Inventory (
+    inventory_id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER CHECK (quantity >= 0),
+    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    movement_type_id INTEGER,
+    supplier_id INTEGER,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    FOREIGN KEY (movement_type_id) REFERENCES Movement_Type(movement_type_id),
+    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id)
+);
+
+CREATE INDEX idx_inventory_product_id ON Inventory(product_id);
